@@ -51,6 +51,16 @@ class Equipo {
     const { rows } = await pool.query(query, [id]);
     return rows.length > 0 ? new Equipo(rows[0]) : null;
   }
+
+  static async findAll() {
+    const query = `
+      SELECT Equipos.*, Clientes.nombre AS nombre_cliente
+      FROM Equipos
+      JOIN Clientes ON Equipos.id_cliente = Clientes.id`;
+    const { rows } = await pool.query(query);
+    return rows.map(row => new Equipo(row));
+  }
+
 }
 
 export default Equipo;

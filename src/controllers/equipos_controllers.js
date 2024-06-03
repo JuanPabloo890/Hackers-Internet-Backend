@@ -59,9 +59,20 @@ const detalleEquipo = async (req, res) => {
   }
 };
 
+const listarEquipos = async (req, res) => {
+  try {
+    const equipos = await Equipo.findAll();
+    res.status(200).json(equipos);
+  } catch (error) {
+    console.error("Error al listar los equipos:", error);
+    res.status(500).json({ msg: "Error en el servidor" });
+  }
+};
+
 export {
   registrarEquipo,
   actualizarEquipo,
   eliminarEquipo,
-  detalleEquipo
+  detalleEquipo,
+  listarEquipos
 };
