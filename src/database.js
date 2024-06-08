@@ -32,7 +32,11 @@ try {
     database: process.env.DB_NAME,
     password: process.env.DB_PASSWORD,
     port: process.env.DB_PORT,
+    ssl: {
+      rejectUnauthorized: false // Esto es para aceptar cualquier certificado. En producción, usa certificados verificados.
+    }
   });
+  
 
   pool.on('connect', () => {
     console.log('Conectado a la base de datos PostgreSQL');
