@@ -5,22 +5,40 @@ const { Pool } = pg;
 
 dotenv.config();
 
-let pool;
+//CONECTARSE DESDE EL RENDER
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  }
+});
 
-try {
-  pool = new Pool({
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
-    database: process.env.DB_NAME,
-    password: process.env.DB_PASSWORD,
-    port: process.env.DB_PORT,
-  });
+pool.on('connect', () => {
+  console.log('Conectado a la base de datos PostgreSQL');
+});
 
-  pool.on('connect', () => {
-    console.log('Conectado a la base de datos PostgreSQL');
-  });
-} catch (err) {
+pool.on('error', (err) => {
   console.error('Error al conectar a la base de datos PostgreSQL', err);
-}
+});
+
+//CONECTARSE LOCALMENTE
+
+// let pool;
+
+// try {
+//   pool = new Pool({
+//     user: process.env.DB_USER,
+//     host: process.env.DB_HOST,
+//     database: process.env.DB_NAME,
+//     password: process.env.DB_PASSWORD,
+//     port: process.env.DB_PORT,
+//   });
+
+//   pool.on('connect', () => {
+//     console.log('Conectado a la base de datos PostgreSQL');
+//   });
+// } catch (err) {
+//   console.error('Error al conectar a la base de datos PostgreSQL', err);
+// }
 
 export default pool;
