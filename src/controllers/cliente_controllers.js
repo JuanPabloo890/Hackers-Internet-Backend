@@ -121,6 +121,16 @@ const loginCliente = async (req, res) => {
       res.status(500).json({ msg: "Error en el servidor" });
     }
   };
+
+  const listarClientes = async (req, res) => {
+    try {
+      const clientes = await Cliente.findAll();
+      res.status(200).json(clientes);
+    } catch (error) {
+      console.error("Error al listar los equipos:", error);
+      res.status(500).json({ msg: "Error en el servidor" });
+    }
+  };
   
   //exportar las funciones
   export {
@@ -128,5 +138,6 @@ const loginCliente = async (req, res) => {
     actualizarCliente,
     eliminarCliente,
     detalleCliente,
-    loginCliente
+    loginCliente,
+    listarClientes
   };

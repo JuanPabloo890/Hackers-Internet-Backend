@@ -55,6 +55,14 @@ class Cliente {
     const { rows } = await pool.query(query, [id]);
     return rows.length > 0 ? new Cliente(rows[0]) : null;
   }
+
+  static async findAll() {
+    const query = `
+      SELECT *
+      FROM Clientes`;
+    const { rows } = await pool.query(query);
+    return rows;
+  }
 }
 
 export default Cliente;
