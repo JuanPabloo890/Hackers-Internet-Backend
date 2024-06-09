@@ -1,22 +1,23 @@
 import pool from '../database.js';
 
 class Equipo {
-  constructor({ id, marca, modelo, estado, id_cliente, nombre_cliente }) {
+  constructor({ id, marca, modelo, estado, id_cliente, nombre_cliente, observaciones }) {
     this.id = id;
     this.marca = marca;
     this.modelo = modelo;
     this.estado = estado;
     this.id_cliente = id_cliente;
     this.nombre_cliente = nombre_cliente; 
+    this.observaciones = observaciones;
   }
 
   static async create(equipoData) {
-    const { marca, modelo, estado, id_cliente } = equipoData;
+    const { marca, modelo, estado, id_cliente, observaciones } = equipoData;
     const query = `
-      INSERT INTO Equipos (marca, modelo, estado, id_cliente)
-      VALUES ($1, $2, $3, $4)
+      INSERT INTO Equipos (marca, modelo, estado, id_cliente, observaciones)
+      VALUES ($1, $2, $3, $4, $5)
       RETURNING *`;
-    const values = [marca, modelo, estado, id_cliente];
+    const values = [marca, modelo, estado, id_cliente, observaciones];
     const { rows } = await pool.query(query, values);
     return new Equipo(rows[0]);
   }
@@ -35,13 +36,13 @@ class Equipo {
   }
 
   static async update(id, equipoData) {
-    const { marca, modelo, estado, id_cliente } = equipoData;
+    const { marca, modelo, estado, id_cliente, observaciones } = equipoData;
     const query = `
       UPDATE Equipos
-      SET marca = $1, modelo = $2, estado = $3, id_cliente = $4
-      WHERE id = $5
+      SET marca = $1, modelo = $2, estado = $3, id_cliente = $4, observaciones = $5
+      WHERE id = $6
       RETURNING *`;
-    const values = [marca, modelo, estado, id_cliente, id];
+    const values = [marca, modelo, estado, id_cliente,observaciones, id ];
     const { rows } = await pool.query(query, values);
     return new Equipo(rows[0]);
   }
