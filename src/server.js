@@ -7,6 +7,8 @@ import routerEquipos from './routers/equipos_routes.js';
 import routerAdministrador from './routers/administrador_routes.js';
 import routerMantenimiento from './routers/mantenimiento_routes.js';
 
+import { swaggerUi, swaggerDocs } from './config/swaggerConfig.js'; // Importa Swagger
+
 dotenv.config();
 
 // Crear una instancia de express
@@ -24,6 +26,9 @@ app.use('/api', routerClientes);
 app.use('/api', routerEquipos); 
 app.use('/api', routerAdministrador);
 app.use('/api', routerMantenimiento);
+
+// Ruta para la documentación de Swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // Manejo de una ruta que no sea encontrada
 app.use((req, res) => res.status(404).send("Endpoint no encontrado - 404"));
