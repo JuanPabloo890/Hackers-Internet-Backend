@@ -32,7 +32,7 @@ import {
  *         id: 1
  *         correo: juan@example.com
  *         nombre: Juan Pérez
- *         telefono: 0987654321
+ *         telefono: "0987654321"
  *         password: password123
  */
 
