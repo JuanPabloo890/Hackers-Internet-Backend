@@ -9,6 +9,7 @@ import {
   listarEquipos,
   equiposPorEstado,
   equiposPorModelo,
+  equiposPorMarca,
   equiposPorIdCliente
 } from '../controllers/equipos_controllers.js';
 
@@ -195,6 +196,27 @@ router.get('/equipos/estado/:estado', equiposPorEstado);
  *         description: No se encontraron equipos con ese modelo
  */
 router.get('/equipos/modelo/:modelo', equiposPorModelo);
+
+/**
+ * @swagger
+ * /api/equipos/marca/{marca}:
+ *   get:
+ *     summary: Consultar equipos por marca
+ *     tags: [Equipos]
+ *     parameters:
+ *       - in: path
+ *         name: marca
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Marca de los equipos a consultar
+ *     responses:
+ *       200:
+ *         description: Equipos obtenidos correctamente
+ *       404:
+ *         description: No se encontraron equipos con esa marca
+ */
+router.get('/equipos/marca/:marca', equiposPorMarca);
 
 /**
  * @swagger

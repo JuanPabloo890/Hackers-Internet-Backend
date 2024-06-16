@@ -81,6 +81,18 @@ const equiposPorEstado = async (req, res) => {
   }
 };
 
+// Consultar equipos por marca
+const equiposPorMarca = async (req, res) => {
+  try {
+    const { marca } = req.params;
+    const equipos = await Equipo.findByMarca(marca);
+    res.status(200).json(equipos);
+  } catch (error) {
+    console.error("Error al obtener equipos por marca:", error);
+    res.status(500).json({ msg: "Error en el servidor" });
+  }
+};
+
 // Consultar equipos por modelo
 const equiposPorModelo = async (req, res) => {
   try {
@@ -112,6 +124,7 @@ export {
   detalleEquipo,
   listarEquipos,
   equiposPorEstado,
+  equiposPorMarca,
   equiposPorModelo,
   equiposPorIdCliente,
 };

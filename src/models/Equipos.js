@@ -77,6 +77,12 @@ class Equipo {
     return null;
   }
 
+  static async findByMarca(marca) {
+    const query = 'SELECT * FROM Equipos WHERE LOWER(marca) = LOWER($1)';
+    const { rows } = await pool.query(query, [marca]);
+    return rows.map(row => new Equipo(row));
+  }
+
   static async findByModelo(modelo) {
     const query = 'SELECT * FROM Equipos WHERE LOWER(modelo) = LOWER($1)';
     const { rows } = await pool.query(query, [modelo]);
