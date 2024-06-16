@@ -62,6 +62,33 @@ class Equipo {
     return rows.map(row => new Equipo(row));
   }
 
+  static async findByEstado(estado) {
+    const query = 'SELECT * FROM Equipos WHERE estado = $1';
+    const { rows } = await pool.query(query, [estado]);
+    return rows.map(row => new Equipo(row));
+  }
+
+  static async findById(id) {
+    const query = 'SELECT * FROM Equipos WHERE id = $1';
+    const { rows } = await pool.query(query, [id]);
+    if (rows.length > 0) {
+      return new Equipo(rows[0]);
+    }
+    return null;
+  }
+
+  static async findByModelo(modelo) {
+    const query = 'SELECT * FROM Equipos WHERE modelo = $1';
+    const { rows } = await pool.query(query, [modelo]);
+    return rows.map(row => new Equipo(row));
+  }
+
+  static async findByIdCliente(id_cliente) {
+    const query = 'SELECT * FROM Equipos WHERE id_Cliente = $1';
+    const { rows } = await pool.query(query, [id_cliente]);
+    return rows.map(row => new Equipo(row));
+  }
+
 }
 
 export default Equipo;

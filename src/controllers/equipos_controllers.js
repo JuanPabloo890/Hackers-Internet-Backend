@@ -69,10 +69,50 @@ const listarEquipos = async (req, res) => {
   }
 };
 
+// Consultar equipos por estado
+const equiposPorEstado = async (req, res) => {
+  try {
+    const { estado } = req.params;
+    const equipos = await Equipo.findByEstado(estado);
+    res.status(200).json(equipos);
+  } catch (error) {
+    console.error("Error al obtener equipos por estado:", error);
+    res.status(500).json({ msg: "Error en el servidor" });
+  }
+};
+
+// Consultar equipos por modelo
+const equiposPorModelo = async (req, res) => {
+  try {
+    const { modelo } = req.params;
+    const equipos = await Equipo.findByModelo(modelo);
+    res.status(200).json(equipos);
+  } catch (error) {
+    console.error("Error al obtener equipos por modelo:", error);
+    res.status(500).json({ msg: "Error en el servidor" });
+  }
+};
+
+// Consultar equipos por ID del cliente
+const equiposPorIdCliente = async (req, res) => {
+  try {
+    const { id_cliente } = req.params;
+    const equipos = await Equipo.findByIdCliente(id_cliente);
+    res.status(200).json(equipos);
+  } catch (error) {
+    console.error("Error al obtener equipos por ID del cliente:", error);
+    res.status(500).json({ msg: "Error en el servidor" });
+  }
+};
+
 export {
   registrarEquipo,
   actualizarEquipo,
   eliminarEquipo,
   detalleEquipo,
-  listarEquipos
+  listarEquipos,
+  equiposPorEstado,
+  equiposPorModelo,
+  equiposPorIdCliente,
 };
+

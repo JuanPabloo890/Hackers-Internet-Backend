@@ -1,5 +1,4 @@
 import { Router } from 'express';
-
 const router = Router();
 
 import {
@@ -7,7 +6,10 @@ import {
   actualizarEquipo,
   eliminarEquipo,
   detalleEquipo,
-  listarEquipos
+  listarEquipos,
+  equiposPorEstado,
+  equiposPorModelo,
+  equiposPorIdCliente
 } from '../controllers/equipos_controllers.js';
 
 /**
@@ -48,7 +50,6 @@ import {
  *         id_cliente: 1
  *         observaciones: Sin observaciones
  */
-
 
 /**
  * @swagger
@@ -152,5 +153,68 @@ router.get('/equipo/:id', detalleEquipo);
  *         description: No se encontraron equipos
  */
 router.get('/equipos', listarEquipos);
+
+/**
+ * @swagger
+ * /api/equipos/estado/{estado}:
+ *   get:
+ *     summary: Consultar equipos por estado
+ *     tags: [Equipos]
+ *     parameters:
+ *       - in: path
+ *         name: estado
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Estado de los equipos a consultar
+ *     responses:
+ *       200:
+ *         description: Equipos obtenidos correctamente
+ *       404:
+ *         description: No se encontraron equipos con ese estado
+ */
+router.get('/equipos/estado/:estado', equiposPorEstado);
+
+/**
+ * @swagger
+ * /api/equipos/modelo/{modelo}:
+ *   get:
+ *     summary: Consultar equipos por modelo
+ *     tags: [Equipos]
+ *     parameters:
+ *       - in: path
+ *         name: modelo
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Modelo de los equipos a consultar
+ *     responses:
+ *       200:
+ *         description: Equipos obtenidos correctamente
+ *       404:
+ *         description: No se encontraron equipos con ese modelo
+ */
+router.get('/equipos/modelo/:modelo', equiposPorModelo);
+
+/**
+ * @swagger
+ * /api/equipos/cliente/{id_cliente}:
+ *   get:
+ *     summary: Consultar equipos por ID del cliente
+ *     tags: [Equipos]
+ *     parameters:
+ *       - in: path
+ *         name: id_cliente
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID del cliente cuyos equipos se quieren consultar
+ *     responses:
+ *       200:
+ *         description: Equipos obtenidos correctamente
+ *       404:
+ *         description: No se encontraron equipos para ese cliente
+ */
+router.get('/equipos/cliente/:id_cliente', equiposPorIdCliente);
 
 export default router;
