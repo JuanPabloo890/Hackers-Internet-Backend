@@ -44,7 +44,7 @@ const router = Router();
  *       example:
  *         correo: heyer.tinoco@epn.edu.ec
  *         nombre: Heyer Tinoco
- *         telefono: 0987547665
+ *         telefono: "0987547665"
  *         password: admin123
  */
 

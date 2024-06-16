@@ -117,7 +117,7 @@ router.post('/cliente', registrarCliente);
  *           example:
  *             correo: juan_updated@example.com
  *             nombre: Juan Pérez Updated
- *             telefono: 0987654322
+ *             telefono: "0987654322"
  *     responses:
  *       200:
  *         description: Cliente actualizado correctamente
