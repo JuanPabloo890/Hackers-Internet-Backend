@@ -53,6 +53,7 @@ const registrarCliente = async (req, res) => {
     await sendMail(password, correo);
 
     const nuevoCliente = await Cliente.create({
+      msg: "Inicio de sesión exitoso",
       correo,
       nombre,
       telefono,
