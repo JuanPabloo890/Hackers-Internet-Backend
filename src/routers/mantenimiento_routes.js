@@ -105,7 +105,7 @@ router.get('/mantenimiento/:id_unico', getMantenimientoById);
  *       404:
  *         description: Equipo no encontrado o no tiene mantenimientos asociados
  */
-router.get('/equipo/:id_unico', getMantenimientosByEquipoId);
+router.get('/mantenimiento/equipo/:id_equipo', getMantenimientosByEquipoId);
 
 /**
  * @swagger
