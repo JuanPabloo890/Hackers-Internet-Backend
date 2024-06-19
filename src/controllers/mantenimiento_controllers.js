@@ -32,12 +32,16 @@ const getMantenimientosByEquipoId = async (req, res) => {
   try {
     const { id_equipo } = req.params;
     const mantenimientos = await Mantenimiento.findByEquipoId(id_equipo);
+    if (mantenimientos.length === 0) {
+      return res.status(404).json({ msg: 'Equipo no encontrado o no tiene mantenimientos asociados' });
+    }
     res.status(200).json(mantenimientos);
   } catch (error) {
     console.error('Error al obtener mantenimientos por ID de equipo:', error);
     res.status(500).json({ msg: 'Error al obtener mantenimientos' });
   }
 };
+
 
 // Actualizar un mantenimiento
 const updateMantenimiento = async (req, res) => {

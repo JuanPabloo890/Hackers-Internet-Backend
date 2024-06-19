@@ -88,13 +88,13 @@ router.get('/mantenimiento/:id_unico', getMantenimientoById);
 
 /**
  * @swagger
- * /api/equipo/{id_unico}:
+ * /api/mantenimiento/equipo/{id_equipo}:
  *   get:
  *     summary: Obtener todos los mantenimientos de un equipo por ID
  *     tags: [Mantenimiento]
  *     parameters:
  *       - in: path
- *         name: id_unico
+ *         name: id_equipo
  *         required: true
  *         schema:
  *           type: integer
@@ -106,6 +106,7 @@ router.get('/mantenimiento/:id_unico', getMantenimientoById);
  *         description: Equipo no encontrado o no tiene mantenimientos asociados
  */
 router.get('/mantenimiento/equipo/:id_equipo', getMantenimientosByEquipoId);
+
 
 /**
  * @swagger
