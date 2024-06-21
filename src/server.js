@@ -27,6 +27,10 @@ app.use('/api', routerEquipos);
 app.use('/api', routerAdministrador);
 app.use('/api', routerMantenimiento);
 
+app.get('/', (req, res) => {
+    res.send('API is running...');
+});
+
 // Ruta para la documentación de Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
