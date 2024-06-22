@@ -30,7 +30,7 @@ app.use('/api', routerMantenimiento);
 // Ruta para la documentación de Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-app.get('/', (req, res) => {
+app.get('/api/status', (req, res) => {
     res.send('API is running...');
 });
 
