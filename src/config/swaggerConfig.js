@@ -22,11 +22,7 @@ const swaggerOptions = {
       {
         url: 'https://tesis-kphi.onrender.com',
         description: 'Servidor en Render',
-      },
-      {
-        url: 'https://backend-tesis-nine.vercel.app/',
-        description: 'Servidor en Vercel',
-      },
+      }
     ],
   },
   apis: [

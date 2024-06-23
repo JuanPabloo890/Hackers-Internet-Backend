@@ -2,11 +2,16 @@
 import pool from '../database.js';
 
 class Mantenimiento {
-  constructor({ id_unico, id_equipo, descripcion, fecha }) {
+  constructor({ id_unico, id_equipo, descripcion, fecha, marca, modelo, nombre_cliente, telefono, estado }) {
     this.id_unico = id_unico;
     this.id_equipo = id_equipo;
     this.descripcion = descripcion;
     this.fecha = fecha;
+    this.marca = marca;
+    this.modelo = modelo;
+    this.nombre_cliente = nombre_cliente;
+    this.telefono = telefono;
+    this.estado = estado;
   }
 
   static async create(mantenimientoData) {
@@ -30,7 +35,12 @@ class Mantenimiento {
   }
 
   static async findByEquipoId(id_equipo) {
-    const query = 'SELECT * FROM Mantenimiento WHERE id_equipo = $1';
+    const query = `
+      SELECT m.*, e.marca, e.modelo, c.nombre AS nombre_cliente, c.telefono, e.estado
+      FROM Mantenimiento m
+      JOIN Equipos e ON m.id_equipo = e.id
+      JOIN Clientes c ON e.id_cliente = c.id
+      WHERE m.id_equipo = $1`;
     const { rows } = await pool.query(query, [id_equipo]);
     return rows.map(row => new Mantenimiento(row));
   }
