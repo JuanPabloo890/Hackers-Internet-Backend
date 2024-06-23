@@ -1,5 +1,6 @@
 // models/Mantenimiento.js
 import pool from '../database.js';
+import { format } from 'date-fns';
 
 class Mantenimiento {
   constructor({ id_unico, id_equipo, descripcion, fecha, marca, modelo, nombre_cliente, telefono, estado }) {
