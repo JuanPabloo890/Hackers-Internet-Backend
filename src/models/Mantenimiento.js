@@ -6,7 +6,7 @@ class Mantenimiento {
     this.id_unico = id_unico;
     this.id_equipo = id_equipo;
     this.descripcion = descripcion;
-    this.fecha = fecha;
+    this.fecha = format(new Date(fecha), 'yyyy-MM-dd');
     this.marca = marca;
     this.modelo = modelo;
     this.nombre_cliente = nombre_cliente;
