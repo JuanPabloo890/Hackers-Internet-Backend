@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import { sendStatusEmail } from '../config/nodemailer.js';
 
 import {
   createMantenimiento,
