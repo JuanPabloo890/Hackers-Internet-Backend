@@ -47,7 +47,7 @@ class Mantenimiento {
       return null;
     }
 
-    const { marca, modelo, nombre_cliente, telefono, estado_actual } = rows[0];
+    const { marca, modelo, nombre_cliente, telefono } = rows[0];
     const mantenimientos = rows.map(row => ({
       estado_actual: row.estado_actual,
       descripcion: row.descripcion,
@@ -60,7 +60,6 @@ class Mantenimiento {
       modelo,
       nombre_cliente,
       telefono,
-      estado_actual,
       mantenimientos
     };
   }
