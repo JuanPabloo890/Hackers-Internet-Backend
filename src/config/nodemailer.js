@@ -40,7 +40,31 @@ const sendMailToRecoveryPassword = async (userMail, newPassword) => {
   console.log("Mensaje enviado satisfactoriamente: ", info.messageId);
 };
 
+const sendMailToCliente = async (clienteEmail, estadoActual, observaciones, nombreEquipo) => {
+  const mailOptions = {
+    from: 'hackersInternet@gmail.com',
+    to: clienteEmail,
+    subject: "Estado actual de tu equipo",
+    html: `
+      <h1>Estado actual de tu equipo</h1>
+      <p><strong>Estado Actual:</strong> ${estadoActual}</p>
+      <p><strong>Observaciones:</strong> ${observaciones}</p>
+      <p><strong>Nombre del Equipo:</strong> ${nombreEquipo}</p>
+      <hr>
+      <footer>Gracias por confiar en nosotros! 🛠️ </footer>
+    `
+  };
+
+  try {
+    let info = await transporter.sendMail(mailOptions);
+    console.log("Correo enviado satisfactoriamente: ", info.messageId);
+  } catch (error) {
+    console.error("Error al enviar el correo: ", error);
+  }
+};
+
 export {
   sendMail,
-  sendMailToRecoveryPassword
+  sendMailToRecoveryPassword,
+  sendMailToCliente
 }

@@ -1,14 +1,26 @@
 import Mantenimiento from '../models/Mantenimiento.js';
+import { sendMailToCliente } from '../config/nodemailer.js';
+import Equipo from '../models/Equipos.js'
+import Cliente from '../models/Clientes.js'
 
 // Crear un nuevo mantenimiento
 const createMantenimiento = async (req, res) => {
   try {
-    const mantenimientoData = req.body;
-    const nuevoMantenimiento = await Mantenimiento.create(mantenimientoData);
-    res.status(201).json(nuevoMantenimiento);
+    const { id_equipo, descripcion, fecha, estado_actual } = req.body;
+    const mantenimiento = await Mantenimiento.create({ id_equipo, descripcion, fecha, estado_actual });
+
+    // Ejemplo hipotético: Obtener cliente asociado al equipo para enviar correo
+    const equipo = await Equipo.findById(id_equipo);
+    const cliente = await Cliente.findById(equipo.id_cliente);
+    const clienteEmail = cliente.email;
+
+    // Enviar correo al cliente
+    await sendMailToCliente(clienteEmail, estado_actual, descripcion, `${equipo.marca} ${equipo.modelo}`);
+
+    res.status(201).json({ message: 'Mantenimiento registrado correctamente', mantenimiento });
   } catch (error) {
-    console.error('Error al crear mantenimiento:', error);
-    res.status(500).json({ msg: 'Error al crear mantenimiento' });
+    console.error('Error al crear el mantenimiento:', error);
+    res.status(400).json({ error: 'Error al crear el mantenimiento' });
   }
 };
 
