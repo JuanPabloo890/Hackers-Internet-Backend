@@ -1,27 +1,26 @@
-// models/Mantenimiento.js
 import pool from '../database.js';
 import { format } from 'date-fns';
 
 class Mantenimiento {
-  constructor({ id_unico, id_equipo, descripcion, fecha, marca, modelo, nombre_cliente, telefono, estado }) {
+  constructor({ id_unico, id_equipo, descripcion, fecha, estado_actual, marca, modelo, nombre_cliente, telefono }) {
     this.id_unico = id_unico;
     this.id_equipo = id_equipo;
     this.descripcion = descripcion;
     this.fecha = format(new Date(fecha), 'yyyy-MM-dd');
+    this.estado_actual = estado_actual;
     this.marca = marca;
     this.modelo = modelo;
     this.nombre_cliente = nombre_cliente;
     this.telefono = telefono;
-    this.estado = estado;
   }
 
   static async create(mantenimientoData) {
-    const { id_equipo, descripcion, fecha } = mantenimientoData;
+    const { id_equipo, descripcion, fecha, estado_actual } = mantenimientoData;
     const query = `
-      INSERT INTO Mantenimiento (id_equipo, descripcion, fecha)
-      VALUES ($1, $2, $3)
+      INSERT INTO Mantenimiento (id_equipo, descripcion, fecha, estado_actual)
+      VALUES ($1, $2, $3, $4)
       RETURNING *`;
-    const values = [id_equipo, descripcion, fecha];
+    const values = [id_equipo, descripcion, fecha, estado_actual];
     const { rows } = await pool.query(query, values);
     return new Mantenimiento(rows[0]);
   }
@@ -37,7 +36,7 @@ class Mantenimiento {
 
   static async findByEquipoId(id_equipo) {
     const query = `
-      SELECT m.*, e.marca, e.modelo, c.nombre AS nombre_cliente, c.telefono, e.estado
+      SELECT m.*, e.marca, e.modelo, c.nombre AS nombre_cliente, c.telefono, e.estado AS estado_actual
       FROM Mantenimiento m
       JOIN Equipos e ON m.id_equipo = e.id
       JOIN Clientes c ON e.id_cliente = c.id
@@ -48,10 +47,11 @@ class Mantenimiento {
       return null;
     }
 
-    const { marca, modelo, nombre_cliente, telefono, estado } = rows[0];
+    const { marca, modelo, nombre_cliente, telefono, estado_actual } = rows[0];
     const mantenimientos = rows.map(row => ({
+      estado_actual: row.estado_actual,
       descripcion: row.descripcion,
-      fecha: row.fecha
+      fecha: format(new Date(row.fecha), 'yyyy-MM-dd')
     }));
 
     return {
@@ -60,19 +60,19 @@ class Mantenimiento {
       modelo,
       nombre_cliente,
       telefono,
-      estado,
+      estado_actual,
       mantenimientos
     };
   }
 
   static async update(id_unico, mantenimientoData) {
-    const { id_equipo, descripcion, fecha } = mantenimientoData;
+    const { id_equipo, descripcion, fecha, estado_actual } = mantenimientoData;
     const query = `
       UPDATE Mantenimiento
-      SET id_equipo = $1, descripcion = $2, fecha = $3
-      WHERE id_unico = $4
+      SET id_equipo = $1, descripcion = $2, fecha = $3, estado_actual = $4
+      WHERE id_unico = $5
       RETURNING *`;
-    const values = [id_equipo, descripcion, fecha, id_unico];
+    const values = [id_equipo, descripcion, fecha, estado_actual, id_unico];
     const { rows } = await pool.query(query, values);
     return new Mantenimiento(rows[0]);
   }
