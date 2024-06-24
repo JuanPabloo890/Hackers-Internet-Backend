@@ -37,24 +37,24 @@ class Mantenimiento {
 
   static async findByEquipoId(id_equipo) {
     const query = `
-      SELECT m.*, e.marca, e.modelo, c.nombre AS nombre_cliente, c.telefono, e.estado AS estado_actual
+      SELECT m.descripcion, m.fecha, m.estado_actual, e.marca, e.modelo, c.nombre AS nombre_cliente, c.telefono
       FROM Mantenimiento m
       JOIN Equipos e ON m.id_equipo = e.id
       JOIN Clientes c ON e.id_cliente = c.id
       WHERE m.id_equipo = $1`;
     const { rows } = await pool.query(query, [id_equipo]);
-
+  
     if (rows.length === 0) {
       return null;
     }
-
+  
     const { marca, modelo, nombre_cliente, telefono } = rows[0];
     const mantenimientos = rows.map(row => ({
       estado_actual: row.estado_actual,
       descripcion: row.descripcion,
       fecha: format(new Date(row.fecha), 'yyyy-MM-dd')
     }));
-
+  
     return {
       id_equipo,
       marca,
@@ -64,6 +64,7 @@ class Mantenimiento {
       mantenimientos
     };
   }
+  
 
   static async update(id_unico, mantenimientoData) {
     const { id_equipo, descripcion, fecha, estado_actual } = mantenimientoData;
