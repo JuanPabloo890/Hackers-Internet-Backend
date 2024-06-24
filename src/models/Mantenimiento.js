@@ -55,8 +55,8 @@ class Mantenimiento {
       fecha: format(new Date(row.fecha), 'yyyy-MM-dd')
     }));
 
-    // Ordenar mantenimientos por fecha (ascendente)
-    mantenimientos.sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
+    // Ordenar mantenimientos por fecha (descendente)
+    mantenimientos.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
   
     return {
       id_equipo,
