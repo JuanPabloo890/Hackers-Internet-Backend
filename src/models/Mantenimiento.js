@@ -43,7 +43,26 @@ class Mantenimiento {
       JOIN Clientes c ON e.id_cliente = c.id
       WHERE m.id_equipo = $1`;
     const { rows } = await pool.query(query, [id_equipo]);
-    return rows.map(row => new Mantenimiento(row));
+
+    if (rows.length === 0) {
+      return null;
+    }
+
+    const { marca, modelo, nombre_cliente, telefono, estado } = rows[0];
+    const mantenimientos = rows.map(row => ({
+      descripcion: row.descripcion,
+      fecha: row.fecha
+    }));
+
+    return {
+      id_equipo,
+      marca,
+      modelo,
+      nombre_cliente,
+      telefono,
+      estado,
+      mantenimientos
+    };
   }
 
   static async update(id_unico, mantenimientoData) {
