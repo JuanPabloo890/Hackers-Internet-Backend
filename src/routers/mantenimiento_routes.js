@@ -6,6 +6,7 @@ import {
   getMantenimientosByEquipoId,
   updateMantenimiento,
   deleteMantenimiento,
+  getAllMantenimientos
 } from '../controllers/mantenimiento_controllers.js';
 
 const router = Router();
@@ -113,6 +114,20 @@ router.get('/mantenimiento/:id_unico', getMantenimientoById);
  *         description: Equipo no encontrado o no tiene mantenimientos asociados
  */
 router.get('/mantenimiento/equipo/:id_equipo', getMantenimientosByEquipoId);
+
+/**
+ * @swagger
+ * /api/mantenimiento:
+ *   get:
+ *     summary: Obtener todos los mantenimientos registrados
+ *     tags: [Mantenimiento]
+ *     responses:
+ *       200:
+ *         description: Lista de mantenimientos obtenida correctamente
+ *       500:
+ *         description: Error al obtener mantenimientos
+ */
+router.get('/mantenimiento', getAllMantenimientos);
 
 /**
  * @swagger

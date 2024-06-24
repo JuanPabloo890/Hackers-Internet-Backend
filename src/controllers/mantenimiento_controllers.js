@@ -74,10 +74,21 @@ const deleteMantenimiento = async (req, res) => {
   }
 };
 
+const getAllMantenimientos = async (req, res) => {
+  try {
+    const mantenimientos = await Mantenimiento.findAll();
+    res.status(200).json(mantenimientos);
+  } catch (error) {
+    console.error('Error al obtener todos los mantenimientos:', error);
+    res.status(500).json({ msg: 'Error al obtener todos los mantenimientos' });
+  }
+};
+
 export {
   createMantenimiento,
   getMantenimientoById,
   getMantenimientosByEquipoId,
   updateMantenimiento,
-  deleteMantenimiento
+  deleteMantenimiento,
+  getAllMantenimientos
 };

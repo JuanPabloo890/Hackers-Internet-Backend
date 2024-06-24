@@ -67,8 +67,17 @@ class Mantenimiento {
       mantenimientos
     };
   }
-  
 
+  static async findAll() {
+    const query = `
+      SELECT m.*, e.marca, e.modelo, c.nombre AS nombre_cliente, c.telefono
+      FROM Mantenimiento m
+      JOIN Equipos e ON m.id_equipo = e.id
+      JOIN Clientes c ON e.id_cliente = c.id`;
+    const { rows } = await pool.query(query);
+    return rows.map(row => new Mantenimiento(row));
+  }
+  
   static async update(id_unico, mantenimientoData) {
     const { id_equipo, descripcion, fecha, estado_actual } = mantenimientoData;
     const formattedFecha = format(new Date(fecha), 'yyyy-MM-dd'); // Formatear fecha
