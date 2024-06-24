@@ -48,7 +48,7 @@ const router = Router();
  *       example:
  *         id_equipo: 1
  *         descripcion: Mantenimiento preventivo programado
- *         fecha: '2024-06-14T10:30:00Z'
+ *         fecha: '2024-06-14'
  *         estado_actual: 'Operativo'
  */
 /**
