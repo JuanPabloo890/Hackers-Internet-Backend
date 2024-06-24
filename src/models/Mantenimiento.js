@@ -16,11 +16,12 @@ class Mantenimiento {
 
   static async create(mantenimientoData) {
     const { id_equipo, descripcion, fecha, estado_actual } = mantenimientoData;
+    const formattedFecha = format(new Date(fecha), 'yyyy-MM-dd'); // Formatear fecha
     const query = `
       INSERT INTO Mantenimiento (id_equipo, descripcion, fecha, estado_actual)
       VALUES ($1, $2, $3, $4)
       RETURNING *`;
-    const values = [id_equipo, descripcion, fecha, estado_actual];
+    const values = [id_equipo, descripcion, formattedFecha, estado_actual]; // Usar fecha formateada
     const { rows } = await pool.query(query, values);
     return new Mantenimiento(rows[0]);
   }
@@ -66,12 +67,13 @@ class Mantenimiento {
 
   static async update(id_unico, mantenimientoData) {
     const { id_equipo, descripcion, fecha, estado_actual } = mantenimientoData;
+    const formattedFecha = format(new Date(fecha), 'yyyy-MM-dd'); // Formatear fecha
     const query = `
       UPDATE Mantenimiento
       SET id_equipo = $1, descripcion = $2, fecha = $3, estado_actual = $4
       WHERE id_unico = $5
       RETURNING *`;
-    const values = [id_equipo, descripcion, fecha, estado_actual, id_unico];
+    const values = [id_equipo, descripcion, formattedFecha, estado_actual, id_unico]; // Usar fecha formateada
     const { rows } = await pool.query(query, values);
     return new Mantenimiento(rows[0]);
   }
