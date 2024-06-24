@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 import Cliente from '../models/Clientes.js'; // Asegúrate de que la ruta es correcta
-import Equipo from '../models/Equipo.js'; // Asegúrate de que la ruta es correcta
+import Equipo from '../models/Equipos.js'; // Asegúrate de que la ruta es correcta
 import Mantenimiento from '../models/Mantenimiento.js';
 
 const transporter = nodemailer.createTransport({
