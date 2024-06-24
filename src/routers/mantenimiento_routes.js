@@ -1,4 +1,6 @@
 import { Router } from 'express';
+import { sendStatusEmail } from '../config/nodemailer.js';
+
 import {
   createMantenimiento,
   getMantenimientoById,
@@ -160,5 +162,29 @@ router.put('/mantenimiento/:id_unico', updateMantenimiento);
  *         description: Mantenimiento no encontrado
  */
 router.delete('/mantenimiento/:id_unico', deleteMantenimiento);
+
+/**
+ * @swagger
+ * /api/mantenimiento/enviarEstado/{id_equipo}:
+ *   post:
+ *     summary: Enviar un correo con el estado actual y las observaciones del equipo
+ *     tags: [Mantenimiento]
+ *     parameters:
+ *       - in: path
+ *         name: id_equipo
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID del equipo
+ *     responses:
+ *       200:
+ *         description: Correo enviado correctamente
+ *       404:
+ *         description: Equipo no encontrado
+ *       500:
+ *         description: Error al enviar el correo
+ */
+router.post('/enviarEstado/:id_equipo', sendStatusEmail);
+
 
 export default router;
