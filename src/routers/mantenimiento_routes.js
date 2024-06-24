@@ -36,14 +36,20 @@ const router = Router();
  *           type: string
  *           format: date-time
  *           description: Fecha y hora del mantenimiento
+ *         estado_actual:
+ *           type: string
+ *           maxLength: 50
+ *           description: Estado actual del equipo
  *       required:
  *         - id_equipo
  *         - descripcion
  *         - fecha
+ *         - estado_actual
  *       example:
  *         id_equipo: 1
  *         descripcion: Mantenimiento preventivo programado
  *         fecha: '2024-06-14T10:30:00Z'
+ *         estado_actual: 'Operativo'
  */
 /**
  * @swagger
@@ -106,7 +112,6 @@ router.get('/mantenimiento/:id_unico', getMantenimientoById);
  *         description: Equipo no encontrado o no tiene mantenimientos asociados
  */
 router.get('/mantenimiento/equipo/:id_equipo', getMantenimientosByEquipoId);
-
 
 /**
  * @swagger
