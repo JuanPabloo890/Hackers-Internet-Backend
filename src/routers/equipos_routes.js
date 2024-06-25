@@ -52,7 +52,6 @@ import {
  *           type: string
  *           description: Tipo del equipo (por ejemplo, impresora, laptop)
  *       example:
- *         id: LAP123456
  *         marca: Lenovo
  *         modelo: ThinkPad
  *         estado: Nuevo
