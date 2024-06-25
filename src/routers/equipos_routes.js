@@ -91,7 +91,7 @@ router.post('/equipo', registrarEquipo);
  *         name: id
  *         required: true
  *         schema:
- *           type: integer
+ *           type: string
  *         description: ID del equipo a actualizar
  *     requestBody:
  *       required: true
@@ -118,7 +118,7 @@ router.put('/equipo/:id', actualizarEquipo);
  *         name: id
  *         required: true
  *         schema:
- *           type: integer
+ *           type: string
  *         description: ID del equipo a eliminar
  *     responses:
  *       200:
@@ -139,7 +139,7 @@ router.delete('/equipo/:id', eliminarEquipo);
  *         name: id
  *         required: true
  *         schema:
- *           type: integer
+ *           type: string
  *         description: ID del equipo a obtener detalles
  *     responses:
  *       200:
