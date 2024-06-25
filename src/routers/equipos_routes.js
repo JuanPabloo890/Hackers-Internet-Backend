@@ -22,6 +22,7 @@ import {
  *   name: Equipos
  *   description: Endpoints para el manejo de equipos
  */
+
 /**
  * @swagger
  * components:
@@ -30,7 +31,7 @@ import {
  *       type: object
  *       properties:
  *         id:
- *           type: integer
+ *           type: string
  *           description: ID del equipo (generado automáticamente)
  *         marca:
  *           type: string
@@ -47,12 +48,17 @@ import {
  *         observaciones:
  *           type: string
  *           description: Observaciones sobre el equipo (opcional)
+ *         tipo:
+ *           type: string
+ *           description: Tipo del equipo (por ejemplo, impresora, laptop)
  *       example:
+ *         id: LAP123456
  *         marca: Lenovo
  *         modelo: ThinkPad
  *         estado: Nuevo
  *         id_cliente: 1
  *         observaciones: Sin observaciones
+ *         tipo: laptop
  */
 
 /**
