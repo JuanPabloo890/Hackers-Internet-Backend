@@ -258,7 +258,7 @@ router.get('/equipos/cliente/:id_cliente', equiposPorIdCliente);
  *         name: id_equipo
  *         required: true
  *         schema:
- *           type: integer
+ *           type: string
  *         description: ID del equipo a notificar
  *     responses:
  *       200:
