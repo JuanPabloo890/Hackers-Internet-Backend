@@ -1,4 +1,6 @@
 import pool from '../database.js';
+import Mantenimiento from '../models/Mantenimiento.js';
+import { format } from 'date-fns';
 
 class Equipo {
   constructor({ id, marca, modelo, estado, id_cliente, nombre_cliente, observaciones }) {
@@ -19,7 +21,18 @@ class Equipo {
       RETURNING *`;
     const values = [marca, modelo, estado, id_cliente, observaciones];
     const { rows } = await pool.query(query, values);
-    return new Equipo(rows[0]);
+    const nuevoEquipo = new Equipo(rows[0]);
+
+    // Registrar mantenimiento inicial
+    await Mantenimiento.create({
+      id_equipo: nuevoEquipo.id,
+      descripcion: observaciones,
+      fecha: new Date(),
+      estado_actual: estado
+    });
+
+    return nuevoEquipo;
+
   }
 
   static async findById(id) {
@@ -44,7 +57,18 @@ class Equipo {
       RETURNING *`;
     const values = [marca, modelo, estado, id_cliente,observaciones, id ];
     const { rows } = await pool.query(query, values);
-    return new Equipo(rows[0]);
+    const equipoActualizado = new Equipo(rows[0]);
+
+    // Registrar actualización de mantenimiento
+    await Mantenimiento.create({
+      id_equipo: equipoActualizado.id,
+      descripcion: observaciones,
+      fecha: new Date(),
+      estado_actual: estado
+    });
+
+    return equipoActualizado;
+
   }
 
   static async delete(id) {
