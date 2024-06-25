@@ -27,7 +27,6 @@ const loginCliente = async (req, res) => {
     const { nombre, telefono, id } = clienteBDD;
 
     res.status(200).json({
-      msg: "Inicio de sesión exitoso",
       nombre,
       correo: clienteBDD.correo,
       telefono,
@@ -46,21 +45,26 @@ const registrarCliente = async (req, res) => {
     return res.status(400).json({ msg: "Todos los campos son obligatorios" });
   }
 
-  const password = generateRandomPassword();
-
   try {
+    // Verificar si el correo ya está registrado
+    const clienteExistente = await Cliente.findByCorreo(correo);
+    if (clienteExistente) {
+      return res.status(400).json({ msg: "El correo electrónico ya se encuentra registrado" });
+    }
+
+    const password = generateRandomPassword();
     const hashedPassword = await bcrypt.hash(password, 10);
     await sendMail(password, correo);
 
     const nuevoCliente = await Cliente.create({
-      msg: "Inicio de sesión exitoso",
       correo,
       nombre,
       telefono,
       password: hashedPassword,
     });
 
-    res.status(201).json(nuevoCliente);
+    // Responder con un mensaje en lugar del objeto creado
+    res.status(200).json({ msg: "Registro exitoso del cliente y correo con la contraseña enviado correctamente." });
   } catch (error) {
     console.error("Error al registrar el cliente:", error);
     res.status(500).json({ msg: "Error en el servidor" });
