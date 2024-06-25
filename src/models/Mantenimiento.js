@@ -37,7 +37,7 @@ class Mantenimiento {
 
   static async findByEquipoId(id_equipo) {
     const query = `
-      SELECT m.descripcion, m.fecha, m.estado_actual, e.marca, e.modelo, c.nombre AS nombre_cliente, c.telefono
+      SELECT m.id_unico, m.descripcion, m.fecha, m.estado_actual, e.marca, e.modelo, c.nombre AS nombre_cliente, c.telefono 
       FROM Mantenimiento m
       JOIN Equipos e ON m.id_equipo = e.id
       JOIN Clientes c ON e.id_cliente = c.id
@@ -50,6 +50,7 @@ class Mantenimiento {
   
     const { marca, modelo, nombre_cliente, telefono } = rows[0];
     const mantenimientos = rows.map(row => ({
+      id_unico: row.id_unico,
       estado_actual: row.estado_actual,
       descripcion: row.descripcion,
       fecha: format(new Date(row.fecha), 'yyyy-MM-dd')
