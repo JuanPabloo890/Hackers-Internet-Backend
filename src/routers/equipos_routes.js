@@ -1,4 +1,7 @@
 import { Router } from 'express';
+
+import { notificarCliente } from '../config/nodemailer.js';
+
 const router = Router();
 
 import {
@@ -238,5 +241,28 @@ router.get('/equipos/marca/:marca', equiposPorMarca);
  *         description: No se encontraron equipos para ese cliente
  */
 router.get('/equipos/cliente/:id_cliente', equiposPorIdCliente);
+
+/**
+ * @swagger
+ * /api/equipos/{id_equipo}/notificar:
+ *   post:
+ *     summary: Notificar al cliente sobre el estado de su equipo
+ *     tags: [Equipos]
+ *     parameters:
+ *       - in: path
+ *         name: id_equipo
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID del equipo a notificar
+ *     responses:
+ *       200:
+ *         description: Correo enviado exitosamente
+ *       404:
+ *         description: Equipo o cliente no encontrado
+ *       500:
+ *         description: Error en el servidor
+ */
+router.post('/equipos/:id_equipo/notificar', notificarCliente);
 
 export default router;

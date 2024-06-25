@@ -1,4 +1,6 @@
 import nodemailer from 'nodemailer';
+import Equipo from '../models/Equipos.js';
+import Cliente from '../models/Clientes.js';
 
 const transporter = nodemailer.createTransport({
   service: 'gmail', // esto es el servicio de correo que se este usando 
@@ -40,7 +42,54 @@ const sendMailToRecoveryPassword = async (userMail, newPassword) => {
   console.log("Mensaje enviado satisfactoriamente: ", info.messageId);
 };
 
+const notificarCliente = async (req, res) => {
+  const { id_equipo } = req.params;
+
+  try {
+    // Obtener la información del equipo
+    const equipo = await Equipo.findById(id_equipo);
+    if (!equipo) {
+      return res.status(404).json({ msg: 'Equipo no encontrado' });
+    }
+
+    // Obtener la información del cliente
+    const cliente = await Cliente.findById(equipo.id_cliente);
+    if (!cliente) {
+      return res.status(404).json({ msg: 'Cliente no encontrado' });
+    }
+
+    // Enviar el correo electrónico
+    const mailOptions = {
+      from: 'hackersInternet@gmail.com',
+      to: cliente.correo,
+      subject: 'Estado de su equipo',
+      text: `
+        Hola ${cliente.nombre},
+
+        Aquí está el estado actual de su equipo:
+
+        Marca: ${equipo.marca}
+        Estado: ${equipo.estado}
+        Observaciones: ${equipo.observaciones}
+
+        Si tiene alguna pregunta, no dude en contactarnos.
+
+        Saludos,
+        Hackers Internet 🤖🦾
+      `
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    res.status(200).json({ msg: 'Correo enviado exitosamente' });
+  } catch (error) {
+    console.error('Error al notificar al cliente:', error);
+    res.status(500).json({ msg: 'Error en el servidor' });
+  }
+};
+
 export {
   sendMail,
   sendMailToRecoveryPassword,
+  notificarCliente
 }
