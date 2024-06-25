@@ -105,7 +105,7 @@ router.get('/mantenimiento/:id_unico', getMantenimientoById);
  *         name: id_equipo
  *         required: true
  *         schema:
- *           type: integer
+ *           type: string
  *         description: ID del equipo del cual obtener los mantenimientos
  *     responses:
  *       200:
