@@ -74,6 +74,9 @@ const notificarCliente = async (req, res) => {
 
         Si tiene alguna pregunta, no dude en contactarnos.
 
+        Contactanos con el siguiente link
+        https://wa.me/593{0987547665}
+
         Saludos,
         Hackers Internet 🤖🦾
       `
