@@ -15,10 +15,10 @@ const swaggerOptions = {
       description: 'Documentación de la API de TESIS',
     },
     servers: [
-      // {
-      //   url: 'http://localhost:3000',
-      //   description: 'Servidor de desarrollo',
-      // },
+      {
+        url: 'http://localhost:3000',
+        description: 'Servidor de desarrollo',
+      },
       {
         url: 'https://tesis-kphi.onrender.com',
         description: 'Servidor en Render',

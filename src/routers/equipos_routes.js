@@ -54,9 +54,9 @@ import {
  *       example:
  *         marca: Lenovo
  *         modelo: ThinkPad
- *         estado: Nuevo
+ *         estado: En espera
  *         id_cliente: 1
- *         observaciones: Sin observaciones
+ *         observaciones: Esperando repuesto
  *         tipo: laptop
  */
 

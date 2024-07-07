@@ -1,0 +1,46 @@
+config:
+  target: "http://localhost:3000" # Dirección base de tu servidor local
+  phases:
+    - duration: 60 # Duración de la prueba en segundos
+      arrivalRate: 15 # Número de usuarios simulados que llegan cada segundo
+  defaults:
+    headers:
+      Content-Type: "application/json"
+    variables:
+      equipoId: "{{ generateUniqueId('LAP') }}" # Genera un ID único de tipo LAP
+  processor: "./functions.cjs"
+
+scenarios:
+  - flow:
+      - post:
+          url: "/api/equipo" # Endpoint para registrar un nuevo equipo
+          json:
+            marca: "Lenovo"
+            modelo: "ThinkPad"
+            estado: "Nuevo"
+            id_cliente: 50
+            observaciones: "Sin observaciones"
+            tipo: "laptop"
+          afterResponse: "checkResponse" # Función definida en functions.cjs
+
+      - put:
+          url: "/api/equipo/LAP796963" # Endpoint para actualizar un equipo (reemplaza "1" con el ID correcto)
+          json:
+            marca: "Lenovo"
+            modelo: "ThinkPad"
+            estado: "Usado"
+            id_cliente: 51
+            observaciones: "Actualizado a usado"
+          afterResponse: "checkResponse"
+
+      - get:
+          url: "/api/equipo/LAP8E64B7" # Endpoint para obtener detalles de un equipo (reemplaza "1" con el ID correcto)
+          afterResponse: "checkResponse"
+
+      # - delete:
+      #     url: "/api/equipo/LAP80F554" # Endpoint para eliminar un equipo (reemplaza "1" con el ID correcto)
+      #     afterResponse: "checkResponse"
+
+      - get:
+          url: "/api/equipos" # Endpoint para obtener todos los equipos
+          afterResponse: "checkResponse"

@@ -64,7 +64,8 @@ const registrarCliente = async (req, res) => {
     });
 
     // Responder con un mensaje en lugar del objeto creado
-    res.status(200).json({ msg: "Registro exitoso del cliente y correo con la contraseña enviado correctamente." });
+    // PARA LA PREUBA DE CARGA SE NECESITA EL ID: id: nuevoCliente.id, 
+    res.status(200).json({msg: "Registro exitoso del cliente y correo con la contraseña enviado correctamente." });
   } catch (error) {
     console.error("Error al registrar el cliente:", error);
     res.status(500).json({ msg: "Error en el servidor" });
@@ -80,15 +81,16 @@ const actualizarCliente = async (req, res) => {
   }
 
   try {
+    const clienteExistente = await Cliente.findById(id);
+    if (!clienteExistente) {
+      return res.status(404).json({ msg: "Cliente no encontrado" });
+    }
+
     const clienteActualizado = await Cliente.update(id, {
       correo,
       nombre,
       telefono,
     });
-
-    if (!clienteActualizado) {
-      return res.status(404).json({ msg: "Cliente no encontrado" });
-    }
 
     res.status(200).json(clienteActualizado);
   } catch (error) {

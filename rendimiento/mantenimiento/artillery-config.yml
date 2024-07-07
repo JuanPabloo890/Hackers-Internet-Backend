@@ -1,0 +1,23 @@
+config:
+  target: "https://tesis-kphi.onrender.com/api-docs/#/"
+  phases:
+    - duration: 60 # Duracion de la prueba en segundos
+      arrivalRate: 10 # Numero de usuarios simulados que llegan cada segundo
+  defaults:
+    headers:
+      Content-Type: "application/json"
+  processor: "./functions.cjs"
+
+scenarios:
+  - flow:
+      - get:
+          url: "/api/mantenimiento/61"
+          afterResponse: "checkResponse"
+
+      - get:
+          url: "/api/mantenimiento/equipo/LAP5AB201"
+          afterResponse: "checkResponse"
+
+      - get:
+          url: "/api/mantenimiento"
+          afterResponse: "checkResponse"

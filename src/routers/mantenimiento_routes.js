@@ -1,11 +1,8 @@
 import { Router } from 'express';
 
 import {
-  createMantenimiento,
   getMantenimientoById,
   getMantenimientosByEquipoId,
-  updateMantenimiento,
-  deleteMantenimiento,
   getAllMantenimientos
 } from '../controllers/mantenimiento_controllers.js';
 
@@ -51,27 +48,8 @@ const router = Router();
  *         id_equipo: 1
  *         descripcion: Mantenimiento preventivo programado
  *         fecha: '2024-06-14'
- *         estado_actual: 'Operativo'
+ *         estado_actual: 'En Mantenimiento'
  */
-/**
- * @swagger
- * /api/mantenimiento:
- *   post:
- *     summary: Crear un nuevo mantenimiento
- *     tags: [Mantenimiento]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Mantenimiento'
- *     responses:
- *       201:
- *         description: Mantenimiento creado correctamente
- *       400:
- *         description: Error al crear el mantenimiento
- */
-router.post('/mantenimiento', createMantenimiento);
 
 /**
  * @swagger
@@ -128,53 +106,5 @@ router.get('/mantenimiento/equipo/:id_equipo', getMantenimientosByEquipoId);
  *         description: Error al obtener mantenimientos
  */
 router.get('/mantenimiento', getAllMantenimientos);
-
-/**
- * @swagger
- * /api/mantenimiento/{id_unico}:
- *   put:
- *     summary: Actualizar un mantenimiento por ID único
- *     tags: [Mantenimiento]
- *     parameters:
- *       - in: path
- *         name: id_unico
- *         required: true
- *         schema:
- *           type: integer
- *         description: ID único del mantenimiento a actualizar
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Mantenimiento'
- *     responses:
- *       200:
- *         description: Mantenimiento actualizado correctamente
- *       404:
- *         description: Mantenimiento no encontrado
- */
-router.put('/mantenimiento/:id_unico', updateMantenimiento);
-
-/**
- * @swagger
- * /api/mantenimiento/{id_unico}:
- *   delete:
- *     summary: Eliminar un mantenimiento por ID único
- *     tags: [Mantenimiento]
- *     parameters:
- *       - in: path
- *         name: id_unico
- *         required: true
- *         schema:
- *           type: integer
- *         description: ID único del mantenimiento a eliminar
- *     responses:
- *       200:
- *         description: Mantenimiento eliminado correctamente
- *       404:
- *         description: Mantenimiento no encontrado
- */
-router.delete('/mantenimiento/:id_unico', deleteMantenimiento);
 
 export default router;

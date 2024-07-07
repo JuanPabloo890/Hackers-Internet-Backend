@@ -1,4 +1,4 @@
-import pool from '../database.js';
+import pool from "../database.js";
 
 class Administrador {
   constructor({ id, correo, nombre, telefono, password }) {
@@ -21,7 +21,7 @@ class Administrador {
   }
 
   static async findById(id) {
-    const query = 'SELECT * FROM Administrador WHERE id = $1';
+    const query = "SELECT * FROM Administrador WHERE id = $1";
     const { rows } = await pool.query(query, [id]);
     if (rows.length > 0) {
       return new Administrador(rows[0]);
@@ -30,7 +30,7 @@ class Administrador {
   }
 
   static async findByCorreo(correo) {
-    const query = 'SELECT * FROM Administrador WHERE correo = $1';
+    const query = "SELECT * FROM Administrador WHERE correo = $1";
     const { rows } = await pool.query(query, [correo]);
     if (rows.length > 0) {
       return new Administrador(rows[0]);
@@ -40,6 +40,11 @@ class Administrador {
 
   static async update(id, adminData) {
     const { correo, nombre, telefono, password_hash } = adminData;
+
+    if (!correo || !nombre || !telefono || !password_hash) {
+      throw new Error("Datos inválidos proporcionados");
+    }
+
     const query = `
       UPDATE Administrador
       SET correo = $1, nombre = $2, telefono = $3, password = $4
@@ -47,11 +52,17 @@ class Administrador {
       RETURNING *`;
     const values = [correo, nombre, telefono, password_hash, id];
     const { rows } = await pool.query(query, values);
+
+    if (rows.length === 0) {
+      return null;
+    }
+
     return new Administrador(rows[0]);
+
   }
 
   static async delete(id) {
-    const query = 'DELETE FROM Administrador WHERE id = $1 RETURNING *';
+    const query = "DELETE FROM Administrador WHERE id = $1 RETURNING *";
     const { rows } = await pool.query(query, [id]);
     return rows.length > 0 ? new Administrador(rows[0]) : null;
   }

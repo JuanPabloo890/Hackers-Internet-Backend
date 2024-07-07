@@ -1,0 +1,49 @@
+# artillery run --output report.json artillery-config-cliente.yml
+# artillery report --output report.html report.json
+
+config:
+  target: "http://localhost:3000"  # Dirección base de tu servidor local
+  phases:
+    - duration: 30  # Duración de la prueba en segundos
+      arrivalRate: 5  # Número de usuarios simulados que llegan cada segundo
+  defaults:
+    headers:
+      Content-Type: "application/json"
+  processor: "./functions.cjs"  # Ruta al archivo con funciones de middleware para clientes
+
+scenarios:
+  - flow:
+      - post:
+          url: "/api/cliente/login"  # Endpoint para el login de clientes
+          json:
+            correo: "skarabus8@gmail.com"  # Generación dinámica de correo electrónico único
+            password: "WNaYZr5eKI"
+          afterResponse: "checkResponse"  # Función definida en functions.cjs
+
+      - post:
+          url: "/api/cliente"  # Endpoint para registrar un nuevo cliente
+          json:
+            correo: "usuario_${__VU}_${__ITER}@ejemplo.com"  # Generación dinámica de correo electrónico único
+            nombre: "Nuevo Juan Falco"
+            telefono: "0987654321"
+          afterResponse: "checkResponse"  # Función definida en functions.cjs
+
+      - put:
+          url: "/api/cliente/62"  # Endpoint para actualizar un cliente 
+          json:
+            correo: "usuario_${Date.now()}@ejemplo.com"  # Generación dinámica de correo electrónico único
+            nombre: "Juan Pérez Updated"
+            telefono: "0987654322"
+          afterResponse: "checkResponse"  # Función definida en functions.cjs
+
+      - get:
+          url: "/api/cliente/33"  # Endpoint para obtener detalles de un cliente 
+          afterResponse: "checkResponse"  # Función definida en functions.cjs
+
+      # - delete:
+      #     url: "/api/cliente/36"  # Endpoint para eliminar un cliente 
+      #     afterResponse: "checkResponse"  # Función definida en functions.cjs
+
+      - get:
+          url: "/api/clientes"  # Endpoint para obtener todos los clientes
+          afterResponse: "checkResponse"  # Función definida en functions.cjs

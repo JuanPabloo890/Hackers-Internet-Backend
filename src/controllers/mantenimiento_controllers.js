@@ -1,17 +1,5 @@
 import Mantenimiento from '../models/Mantenimiento.js';
 
-// Crear un nuevo mantenimiento
-const createMantenimiento = async (req, res) => {
-  try {
-    const mantenimientoData = req.body;
-    const nuevoMantenimiento = await Mantenimiento.create(mantenimientoData);
-    res.status(201).json(nuevoMantenimiento);
-  } catch (error) {
-    console.error('Error al crear mantenimiento:', error);
-    res.status(500).json({ msg: 'Error al crear mantenimiento' });
-  }
-};
-
 // Obtener un mantenimiento por su ID
 const getMantenimientoById = async (req, res) => {
   try {
@@ -31,10 +19,16 @@ const getMantenimientoById = async (req, res) => {
 const getMantenimientosByEquipoId = async (req, res) => {
   try {
     const { id_equipo } = req.params;
+    if (!id_equipo){
+      return res.status(400).json({ error: 'El ID del equipo es requerido' });
+    }
     const mantenimientos = await Mantenimiento.findByEquipoId(id_equipo);
-    if (mantenimientos.length === 0) {
+    
+    // Verificar si mantenimientos es null o si la longitud es 0
+    if (!mantenimientos || mantenimientos.length === 0) {
       return res.status(404).json({ msg: 'Equipo no encontrado o no tiene mantenimientos asociados' });
     }
+
     res.status(200).json(mantenimientos);
   } catch (error) {
     console.error('Error al obtener mantenimientos por ID de equipo:', error);
@@ -42,41 +36,12 @@ const getMantenimientosByEquipoId = async (req, res) => {
   }
 };
 
-
-// Actualizar un mantenimiento
-const updateMantenimiento = async (req, res) => {
-  try {
-    const { id_unico } = req.params;
-    const mantenimientoData = req.body;
-    const mantenimientoActualizado = await Mantenimiento.update(id_unico, mantenimientoData);
-    if (!mantenimientoActualizado) {
-      return res.status(404).json({ msg: 'Mantenimiento no encontrado' });
-    }
-    res.status(200).json(mantenimientoActualizado);
-  } catch (error) {
-    console.error('Error al actualizar mantenimiento:', error);
-    res.status(500).json({ msg: 'Error al actualizar mantenimiento' });
-  }
-};
-
-// Eliminar un mantenimiento
-const deleteMantenimiento = async (req, res) => {
-  try {
-    const { id_unico } = req.params;
-    const mantenimientoEliminado = await Mantenimiento.delete(id_unico);
-    if (!mantenimientoEliminado) {
-      return res.status(404).json({ msg: 'Mantenimiento no encontrado' });
-    }
-    res.status(200).json(mantenimientoEliminado);
-  } catch (error) {
-    console.error('Error al eliminar mantenimiento:', error);
-    res.status(500).json({ msg: 'Error al eliminar mantenimiento' });
-  }
-};
-
 const getAllMantenimientos = async (req, res) => {
   try {
     const mantenimientos = await Mantenimiento.findAll();
+    if (!mantenimientos || mantenimientos.length === 0) {
+      return res.status(404).json({ msg: 'No se encontraron mantenimientos' });
+    }
     res.status(200).json(mantenimientos);
   } catch (error) {
     console.error('Error al obtener todos los mantenimientos:', error);
@@ -85,10 +50,7 @@ const getAllMantenimientos = async (req, res) => {
 };
 
 export {
-  createMantenimiento,
   getMantenimientoById,
   getMantenimientosByEquipoId,
-  updateMantenimiento,
-  deleteMantenimiento,
   getAllMantenimientos
 };
