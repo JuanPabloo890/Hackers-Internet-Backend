@@ -1,0 +1,39 @@
+# PARA EJECUTAR LAS PRUEBAS INDIVIDUALMENTE SE NECESITA ESTAR DENTRO DE LA CARPETA RENDIMIENTO
+## PARA VEER MEJOR LOS RESULTADOS USAR LOS SIGUIENTES COMANDOS
+
+# artillery run --output report.json artillery-config-admin.yml
+# artillery report --output report.html report.json
+
+config:
+  target: "http://localhost:3000"
+  phases:
+    - duration: 15 # Duración de la prueba en segundos
+      arrivalRate: 10 # Número de usuarios simulados que llegan cada segundo
+  defaults:
+    headers:
+      Content-Type: "application/json"
+  processor: "functions.cjs" # Ruta al archivo con funciones de middleware
+
+scenarios:
+  - flow:
+      - post:
+          url: "/api/admin/login"
+          json:
+            correo: "nuevoemail@epn.edu.ec"
+            password: "admin123"
+          afterResponse: "checkResponse" # Función definida en function.cjs
+
+      - put:
+          url: "/api/admin/1"
+          json:
+            correo: "nuevoemail@epn.edu.ec"
+            nombre: "Nuevo Nombre"
+            telefono: "0987654321"
+            password: "admin123"
+          afterResponse: "checkResponse" # Función definida en function.cjs
+
+      - post:
+          url: "/api/admin/recuperar-password"
+          json:
+            correo: "nuevoemail@epn.edu.ec"
+          afterResponse: "checkResponse" # Función definida en function.cjs
