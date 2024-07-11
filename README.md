@@ -59,5 +59,5 @@ Se necesita crear la base de datos con parametros quemados de parte del administ
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 INSERT INTO Administrador (correo, nombre, telefono, password)
-VALUES ('heyer.tinoco@epn.edu.ec', 'Heyer Tinoco', '0987547665', crypt('admin123', gen_salt('bf')));
+VALUES ('ejemplo@gmail.com', 'Nombre Apellido', '0911111111', crypt('contraadmin123', gen_salt('bf')));
 ```
