@@ -48,8 +48,10 @@ Teniendo todas las configuraciones realizadas para correr la api neceistamos col
 - npm run dev
 ```
 ### Swagger
-Para realizar pruebas locales se pude usar el enlace de Swagger que localmente esta en el puerto http://localhost:3000/api-docs.
-Pero tambien se puede realizar desde el enlace de render junto con swagger https://tesis-kphi.onrender.com/api-docs.
+Para realizar pruebas locales se pude usar el enlace de Swagger que localmente esta en el puerto http://localhost:3000/api-docs
+
+Pero tambien se puede realizar desde el enlace de render junto con swagger https://tesis-kphi.onrender.com/api-docs
+
 En este se selecciona si se quiere de manera local realizar una peticion o en la nube.
 
 ### Base de datos
