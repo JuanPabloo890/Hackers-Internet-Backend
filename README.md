@@ -9,7 +9,7 @@
 ## Instalacion y dependencias 
 Clonar el repositorio con el siguiente comando
 ```sh
-- git clone .... 
+- git clone https://github.com/JuanPabloo890/tesis.git 
 ```
 
 Para instalar todas las dependencias utilizar el comando
@@ -40,4 +40,24 @@ En Postgresql vamos a crear una base de datos y vamos a copiar los parametros de
 
 ### Para realizarlo de en la nube se requiere lo siguiente.
 Tener una cuenta en render y crear una base de datos de PostgreSQL desde render 
-Una vez creada la base de datos necesitamos pasar esas variables a
+Una vez creada la base de datos necesitamos pasar esas variables a la aplicación de PostgreSQL.
+
+## Uso 
+Teniendo todas las configuraciones realizadas para correr la api neceistamos colocar el siguiente comando.
+```sh
+- npm run dev
+```
+### Swagger
+Para realizar pruebas locales se pude usar el enlace de Swagger que localmente esta en el puerto http://localhost:3000/api-docs
+Pero tambien se puede realizar desde el enlace de render junto con swagger https://tesis-kphi.onrender.com/api-docs
+En este se selecciona si se quiere de manera local realizar una peticion o en la nube.
+
+### Base de datos
+Se necesita crear la base de datos con parametros quemados de parte del administrador 
+
+```sh
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+INSERT INTO Administrador (correo, nombre, telefono, password)
+VALUES ('heyer.tinoco@epn.edu.ec', 'Heyer Tinoco', '0987547665', crypt('admin123', gen_salt('bf')));
+```
