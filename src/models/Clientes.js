@@ -42,10 +42,10 @@ class Cliente {
     const { correo, nombre, telefono } = clienteData;
     const query = `
       UPDATE Clientes
-      SET correo = $1, nombre = $2, telefono = $3
+      SET correo = COALESCE($1, correo), nombre = COALESCE($2, nombre), telefono = COALESCE($3, telefono)
       WHERE id = $4
       RETURNING *`;
-    const values = [correo, nombre, telefono, id];
+    const values = [correo || null, nombre, telefono, id];
     const { rows } = await pool.query(query, values);
     return new Cliente(rows[0]);
   }

@@ -4,6 +4,19 @@ import { generateRandomPassword } from "../config/password.js"; //Importamos la 
 import bcrypt from "bcrypt"; //esta libreria nos permite cifrar las contrasenas
 import pool from "../database.js";
 
+//validacion del telefono
+
+const validarYProcesarTelefono = (telefono, res) => {
+  // Expresión regular para validar exactamente 10 dígitos
+  const telefonoValido = /^\d{10}$/;
+
+  if (!telefonoValido.test(telefono)) {
+    res.status(400).json({ msg: "El número de teléfono debe contener exactamente 10 dígitos." });
+    return false;
+  }
+  return true;
+};
+
 const loginCliente = async (req, res) => {
   const { correo, password } = req.body;
 
@@ -45,6 +58,10 @@ const registrarCliente = async (req, res) => {
     return res.status(400).json({ msg: "Todos los campos son obligatorios" });
   }
 
+  if (!validarYProcesarTelefono(telefono, res)) {
+    return; // Teléfono inválido
+  }
+
   try {
     // Verificar si el correo ya está registrado
     const clienteExistente = await Cliente.findByCorreo(correo);
@@ -76,28 +93,54 @@ const actualizarCliente = async (req, res) => {
   const { id } = req.params;
   const { correo, nombre, telefono } = req.body;
 
+  if (!/^\d+$/.test(id)) {
+    return res.status(400).json({ msg: "ID inválido. Debe ser un número entero." });
+  }
+
+  // Validar que todos los campos sean proporcionados
   if (!correo || !nombre || !telefono) {
     return res.status(400).json({ msg: "Todos los campos son obligatorios" });
   }
 
+  // Validar y procesar el teléfono
+  if (!validarYProcesarTelefono(telefono, res)) {
+    return; // Teléfono inválido
+  }
+
   try {
+    // Obtener el cliente existente para comparar el correo
     const clienteExistente = await Cliente.findById(id);
     if (!clienteExistente) {
       return res.status(404).json({ msg: "Cliente no encontrado" });
     }
 
-    const clienteActualizado = await Cliente.update(id, {
-      correo,
+    // Preparar los datos a actualizar
+    const datosActualizados = {
       nombre,
       telefono,
-    });
+    };
 
+    // Verificar si el correo ha cambiado
+    if (correo !== clienteExistente.correo) {
+      datosActualizados.correo = correo;
+      // Generar y cifrar una nueva contraseña para el cliente
+      const password = generateRandomPassword();
+      const hashedPassword = await bcrypt.hash(password, 10);
+      // Enviar un correo electrónico al nuevo correo con la nueva contraseña
+      await sendMail(password, correo);
+    }
+
+    // Actualizar cliente en la base de datos
+    const clienteActualizado = await Cliente.update(id, datosActualizados);
+
+    // Responder con el cliente actualizado
     res.status(200).json(clienteActualizado);
   } catch (error) {
     console.error("Error al actualizar el cliente:", error);
     res.status(500).json({ msg: "Error en el servidor" });
   }
 };
+
 
 const eliminarCliente = async (req, res) => {
   const { id } = req.params;
@@ -127,6 +170,9 @@ const eliminarCliente = async (req, res) => {
 
 const detalleCliente = async (req, res) => {
   const { id } = req.params;
+  if (!/^\d+$/.test(id)) {
+    return res.status(400).json({ msg: "ID inválido. Debe ser un número entero." });
+  }
 
   try {
     const cliente = await Cliente.findById(id);

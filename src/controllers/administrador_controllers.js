@@ -3,6 +3,17 @@ import { sendMailToRecoveryPassword } from '../config/nodemailer.js';
 import crypto from 'crypto';
 import bcrypt from 'bcryptjs';
 
+const validarYProcesarTelefono = (telefono, res) => {
+  // Expresión regular para validar exactamente 10 dígitos
+  const telefonoValido = /^\d{10}$/;
+
+  if (!telefonoValido.test(telefono)) {
+    res.status(400).json({ msg: "El número de teléfono debe contener exactamente 10 dígitos." });
+    return false;
+  }
+  return true;
+};
+
 const loginAdmin = async (req, res) => {
   const { correo, password } = req.body;
 
@@ -41,13 +52,29 @@ const actualizarAdmin = async (req, res) => {
   const { id } = req.params;
   const { correo, nombre, telefono, password } = req.body;
 
-  if (!correo || !nombre || !telefono || !password) {
-    return res.status(400).json({ msg: "Todos los campos son obligatorios" });
+  if (!/^\d+$/.test(id)) {
+    return res.status(400).json({ msg: "ID inválido. Debe ser un número entero." });
+  }
+
+  // Validar solo el campo de teléfono
+  if (telefono && !validarYProcesarTelefono(telefono, res)) {
+    return; // Teléfono inválido
   }
 
   try {
-    const hashedPassword = await bcrypt.hash(password, 10); // Hashear la nueva contraseña
-    const adminActualizado = await Administrador.update(id, { correo, nombre, telefono, password_hash: hashedPassword });
+    // Solo actualizar campos proporcionados
+    const updateData = {};
+    if (correo) updateData.correo = correo;
+    if (nombre) updateData.nombre = nombre;
+    if (telefono) updateData.telefono = telefono;
+    if (password) {
+      // Hashear la nueva contraseña si se proporciona
+      const hashedPassword = await bcrypt.hash(password, 10);
+      updateData.password_hash = hashedPassword;
+    }
+
+    // Actualizar administrador en la base de datos
+    const adminActualizado = await Administrador.update(id, updateData);
 
     if (!adminActualizado) {
       return res.status(404).json({ msg: "Administrador no encontrado" });
@@ -59,6 +86,7 @@ const actualizarAdmin = async (req, res) => {
     res.status(500).json({ msg: "Error en el servidor" });
   }
 };
+
 
 const recuperarPassword = async (req, res) => {
   const { correo } = req.body;
