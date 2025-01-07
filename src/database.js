@@ -14,7 +14,7 @@ try {
     database: process.env.DB_NAME,
     password: process.env.DB_PASSWORD,
     port: process.env.DB_PORT,
-    ssl: true //cambiar esto cuando se suba a la nuve
+    ssl: false //cambiar esto cuando se suba a la nube
   });
 
   pool.on('connect', () => {
